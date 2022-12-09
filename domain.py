@@ -1,17 +1,17 @@
 import whois
 import smtplib
 from datetime import datetime
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText    # for microsoft Outlook
+from email.mime.multipart import MIMEMultipart # for microsoft Outlook
 
 
 def get_domain_expiration_date(domains):
-    domains_info = []
+    domains_info = []   # list for add result
 
     for domain in domains:        
-        expiration_date = whois.whois(domain).expiration_date
-        w = str(expiration_date)[0:10]
-        if isinstance(expiration_date, list):
+        expiration_date = whois.whois(domain).expiration_date  # grab expiration_date
+        data = str(expiration_date)[0:10]   # grab only data
+        if isinstance(expiration_date, list): # type checking and action
             days_diff = (expiration_date[0] - datetime.now()).days
         elif isinstance(expiration_date, datetime):
             days_diff = (expiration_date - datetime.now()).days
@@ -22,17 +22,17 @@ def get_domain_expiration_date(domains):
             ).days
  
         else:
-            print(f"Domain {domain}, wrong expiration_date={expiration_date} type={type(expiration_date)}")
+            print(f"Domain {domain}, wrong expiration_date={expiration_date} type={type(expiration_date)}") # if not domain assign -1
             days_diff = -1
-        domains_info.append((domain, days_diff, w))
-        domains_info.sort(key=lambda x: x[1])
-    result = [(domain, f"{days} left", w) for domain, days, w in domains_info]
+        domains_info.append((domain, days_diff, data)) # add in list
+        domains_info.sort(key=lambda x: x[1])  # sort by second value
+    result = [(domain, f"{days} left", data) for domain, days, data in domains_info]
 
     return result
 
-def send_email(message4):
-    sender = "Yevhen.Nikolskiy@mail.com.ua"
-    password = "*********"
+def send_email(message):
+    sender = "Yevhen.Nikolskyi@com.ua"
+    password = "*******"
     msg = MIMEMultipart()
     body = message1
     msg['From'] = sender
@@ -50,7 +50,7 @@ def send_email(message4):
         return f"{_ex}\nCheck your"
 
 def main():
-    print(send_email(message4=message1))
+    print(send_email(message=message1))
     
 
 if __name__ == "__main__":
@@ -63,5 +63,4 @@ if __name__ == "__main__":
     "epravda.com.ua", "greenleaf.com.ua", "rau.ua", "truskavetska.com.ua", "truskavetska.com", "ua-ua.org", "dilovyi-bc.com.ua", "obolon-residences.com.ua"]
     domains_info = get_domain_expiration_date(domains)
     message1 = ('\t\n'.join([str(item) for item in domains_info]))
-    print(message1)
     main()
