@@ -9,8 +9,8 @@ def get_domain_expiration_date(domains):
     domains_info = []   # list for add result
 
     for domain in domains:        
-        expiration_date = whois.whois(domain).expiration_date  # grab expiration_date
-        data = str(expiration_date)[0:10]   # grab only data
+        expiration_date = whois.whois(domain).expiration_date  # expiration_date
+        data = str(expiration_date)[0:10]   #  only data
         if isinstance(expiration_date, list): # type checking and action
             days_diff = (expiration_date[0] - datetime.now()).days
         elif isinstance(expiration_date, datetime):
