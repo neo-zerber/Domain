@@ -1,2 +1,3 @@
 # Domain
-expiration_date
+The task of monitoring the expiration of domains
+Задача слідкувати за закіньченням доменів 
